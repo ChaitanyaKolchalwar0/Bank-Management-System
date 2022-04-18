@@ -1,0 +1,29 @@
+Create table Create_Account(AccountNum bigint PRIMARY KEY,
+First_name Varchar(15),
+Middle_name Varchar(15),
+Last_name Varchar(15),
+PhoneNo int,
+Email varchar(35),
+Gender char,
+Age int,
+Plot_Num varchar(15),
+L1_Address varchar(255),
+L2_Address varchar(255),
+Pincode int,
+City Varchar(25),
+State Varchar(35),
+Nationality varchar(25),
+Account_type varchar(35),
+Aadhaar bigint,
+PanCard varchar(25),
+Date_of_Birth date,
+);
+
+
+CREATE TABLE TRANSACTIONS(
+TransactionID VARCHAR(35) PRIMARY KEY, 
+Transaction_date date,
+AccountNum bigint FOREIGN KEY REFERENCES Create_Account(AccountNum),
+Branch VARCHAR(15),
+Amount FLOAT,
+);
