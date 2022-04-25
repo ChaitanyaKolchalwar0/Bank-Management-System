@@ -1,3 +1,4 @@
+from email import message
 import tkinter as tk
 from tkinter import *
 from tkcalendar import DateEntry
@@ -7,6 +8,9 @@ import re
 import pypyodbc as odbc
 import random
 import os
+from pandas import DataFrame
+import pandas as pd
+
 
 conn = odbc.connect('Driver={SQL Server};'
 
@@ -17,18 +21,136 @@ conn = odbc.connect('Driver={SQL Server};'
                         'Trusted_connection=yes;')
 
 root=tk.Tk()
-root.geometry("360x360")
+root.title('Bank Management System')
+root.geometry("300x300")
 
 frame=tk.Frame(root)
 frame.place(relx=0.2,rely=0.2,relheight=0.6,relwidth=0.6)
 
 
+def account_details():
+    root=Tk()
+    root.geometry("500x600")
+    root.title('Bank Management System')
+
+
+
+    Label(root,text="Account Details", width=20,font=("bold",20)).grid(row=0,column=1)
+    AccountNo=Label(root,text="Account No:", width=20,font=("bold",10))
+    AccountNo.place(x=0,y=60)
+
+    AccountNo2=Entry(root,width=20)
+    AccountNo2.place(x=60,y=100)
+
+    label=Label(root, text="", font=('Calibri 12'))
+    label.place(x=10,y=150)
+
+    label1=Label(root, text="", font=('Calibri 12'))
+    label1.place(x=10,y=170)
+
+    label2=Label(root, text="", font=('Calibri 12'))
+    label2.place(x=10,y=200)
+
+    label3=Label(root, text="", font=('Calibri 12'))
+    label3.place(x=10,y=230)
+    
+    label4=Label(root, text="", font=('Calibri 12'))
+    label4.place(x=10,y=250)
+    
+    label5=Label(root, text="", font=('Calibri 12'))
+    label5.place(x=10,y=270)
+    
+    label6=Label(root, text="", font=('Calibri 12'))
+    label6.place(x=10,y=290)
+    
+    label7=Label(root, text="", font=('Calibri 12'))
+    label7.place(x=10,y=310)
+    
+    label8=Label(root, text="", font=('Calibri 12'))
+    label8.place(x=10,y=330)
+    
+    label9=Label(root, text="", font=('Calibri 12'))
+    label9.place(x=10,y=360)
+    
+    label10=Label(root, text="", font=('Calibri 12'))
+    label10.place(x=10,y=390)
+    
+    label11=Label(root, text="", font=('Calibri 12'))
+    label11.place(x=10,y=420)
+    
+
+
+    def getvalues():
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM Create_Account WHERE AccountNum ='+str(AccountNo2.get()))
+        data = list(sum(cursor.fetchall(),()))
+        print(data)
+        
+
+        if not data:
+            messagebox.showerror("","Account not Available")
+        
+        else:
+
+            label.config(text="Account Number   : "+ str(data[0]))
+            label1.config(text="Name            : "+ data[1]+" "+data[2]+" "+data[3])
+            label2.config(text="Mobile NO.       : "+ str(data[4]))
+            label3.config(text="Email            : "+str(data[5]))
+            label4.config(text="Gender           : " +str(data[6]))
+            label5.config(text="Age              : "+str(data[7]))
+            label6.config(text="Date of Birth    : "+str(data[18]))
+            label7.config(text="Address          : "+str(data[8])+", "+data[9]+", "+data[10]+", "+ data[12]+"-"+str(data[11])+" "+data[13]+".")
+            label8.config(text="Country          : "+ str(data[14]))
+            label9.config(text="Account Type     : "+str(data[15]))
+            label10.config(text="Aadhar Card No   : "+str(data[16]))
+            label11.config(text="PAN Number       : "+str(data[17]))          
+
+    Button(root, text='Submit' , width=16,bg="black",fg='white',font=("bold",10),command= lambda : getvalues()).place(x=200,y=95)
+    root.mainloop()
+
+
+def delete_account():
+    root=Tk()
+    root.geometry("300x300")
+    root.title('Bank Management System')
+
+    Label(root,text="Delete Account", width=20,font=("bold",20)).grid(row=0,column=1)
+    AccountNo=Label(root,text="Account No:", width=20,font=("bold",10))
+    AccountNo.place(x=0,y=60)
+
+    AccountNo1=Entry(root)
+    AccountNo1.place(x=100,y=100)
+
+    def getvals():
+        cursor = conn.cursor()
+        cursor.execute('select AccountNum from Create_Account')
+        data = cursor.fetchall()
+        print(list(data))
+       
+        if not data :
+            messagebox.showerror("","Account Number is Not Valid")
+         
+        else:
+            sql="delete from Create_Account where AccountNum="+str(AccountNo1.get())
+            cursor = conn.cursor()
+            cursor.execute(sql)
+            conn.commit()
+            messagebox.showinfo("","Account Deleted")
+            
+
+    Button(root, text='Submit' , width=20,bg="black",fg='white',font=("bold",10),command= lambda : getvals()).place(x=100,y=200)
+    root.mainloop()
+
 def create_account():
 
-    def acnt():
-        global AccountNO 
-        AccountNO = random.randint(1,1000000000000)
-    acnt()
+    # def acnt():
+    #     global x,y,AccountNO 
+    #     x = random.randint(1,1000)
+    #     y = 88887777 
+        
+    #     AccountNO = x+y
+
+    # acnt()
 
     #Creating object 'root' of Tk()
     root = Tk()
@@ -183,6 +305,18 @@ def create_account():
     Actype.set('Select Account Type')
     droplist.place(x=200,y=420)
 
+    menu = Menu(root)
+    root.config(menu=menu)
+    filemenu = Menu(menu)
+    menu.add_cascade(label='Menu', menu=filemenu)
+    # filemenu.add_command(label='Create Account',command=create_account)
+    # filemenu.add_separator()
+    filemenu.add_command(label='Delete Account',command=delete_account)
+    filemenu.add_separator()
+    filemenu.add_command(label='Account Details',command=account_details)
+    filemenu.add_separator()
+    filemenu.add_command(label='Exit', command=root.quit)
+
 
     def get_data():
 
@@ -219,7 +353,6 @@ def create_account():
             messagebox.showerror("","Enter a Valid Email Address")
 
             
-
         if var.get() == 1:
             Gender_final = 'Male'
         elif var.get() == 2:
@@ -229,38 +362,42 @@ def create_account():
         Balance = 0
         PinCode_final = int(Pincode.get())
 
-        print(AccountNO,type(AccountNO))
-        print(Fname_final,type(Fname_final))
-        print(Mname_final,type(Mname_final))
-        print(Lname_final,type(Lname_final))
-        print(phoneNo_final,type(phoneNo_final))
-        print(Email_final,type(Email_final))
-        print(Gender_final,type(Gender_final))
-        print(Age_Final,type(Age_Final))
-        print(Plno.get(),type(Plno.get()))
-        print(L1_Address.get(),type(L1_Address.get()))
-        print(L2_Address.get(),type(L2_Address.get()))
-        print(Pincode.get(),type(Pincode.get()))
-        print(City.get(),type(City.get()))
-        print(State.get(),type(State.get()))
-        print(country.get(),type(country.get()))
-        print(Actype.get(),type(Actype.get()))
-        print(Aadhaar.get() ,type(Aadhaar.get()))
-        print(PanCard.get() ,type(PanCard.get()))
-        print(Date_Of_Birth,type(Date_Of_Birth))
+        # print(AccountNO,type(AccountNO))
+        # print(Fname_final,type(Fname_final))
+        # print(Mname_final,type(Mname_final))
+        # print(Lname_final,type(Lname_final))
+        # print(phoneNo_final,type(phoneNo_final))
+        # print(Email_final,type(Email_final))
+        # print(Gender_final,type(Gender_final))
+        # print(Age_Final,type(Age_Final))
+        # print(Plno.get(),type(Plno.get()))
+        # print(L1_Address.get(),type(L1_Address.get()))
+        # print(L2_Address.get(),type(L2_Address.get()))
+        # print(Pincode.get(),type(Pincode.get()))
+        # print(City.get(),type(City.get()))
+        # print(State.get(),type(State.get()))
+        # print(country.get(),type(country.get()))
+        # print(Actype.get(),type(Actype.get()))
+        # print(Aadhaar.get() ,type(Aadhaar.get()))
+        # print(PanCard.get() ,type(PanCard.get()))
+        # print(Date_Of_Birth,type(Date_Of_Birth))
 
         
 
         cursor = conn.cursor()
-        cursor.execute( "insert into Create_Account (AccountNum,First_name,Middle_name,Last_name,PhoneNo,Email,Gender,Age,Plot_Num,L1_Address,L2_Address,Pincode,City,State,Nationality,Account_type,Aadhaar,PanCard,Date_of_Birth,Balance) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (AccountNO,Fname_final,Mname_final,Lname_final,phoneNo_final,Email_final,Gender_final,Age_Final,Plno.get(),L1_Address.get(),L2_Address.get(),PinCode_final,City.get(),State.get(),country.get(),Actype.get(),Aadhaar_final,PanCard.get(),Date_Of_Birth,Balance))
+        cursor.execute( "EXEC CREATEACCOUNT @First_name=?,@Middle_name=?,@Last_name=?,@PhoneNo=?,@Email=?,@Gender=?,@Age=?,@Plot_Num=?,@L1_Address=?,@L2_Address=?,@Pincode=?,@City=?,@State=? ,@Nationality=?,@Account_type=? ,@Aadhaar=? ,@PanCard=? ,@Date_of_Birth=? ,@Balance=?;", (Fname_final,Mname_final,Lname_final,phoneNo_final,Email_final,Gender_final,Age_Final,Plno.get(),L1_Address.get(),L2_Address.get(),PinCode_final,City.get(),State.get(),country.get(),Actype.get(),Aadhaar_final,PanCard.get(),Date_Of_Birth,Balance))
         conn.commit()
         cursor.execute('select * from Create_Account')
+    
 
-        # print(cursor)
+        table=[list(i) for i in cursor.fetchall()]
+        df=pd.DataFrame(table,columns=["AccountNum","First_name","Middle_name","Last_name","PhoneNo","Email","Gender","Age","Plot_Num","L1_Address","L2_Address","Pincode","City","State","Nationality","Account_type","Aadhaar","PanCard","Date_of_Birth","Balance"])
 
-        for i in cursor:
+        print(df)
 
-            print(i)
+        messagebox.showinfo("","Account Created")
+
+
 
 
     #this creates button for submitting the details provides by the user
@@ -278,7 +415,12 @@ def login():
         if(uname == "" and password == "") :
             messagebox.showerror("", "Both the field are required")
 
-        elif(uname == "Admin" and password == "123"):
+        elif(uname == "Perficient" and password == "1234"):
+            messagebox.showinfo("","Login Successfull")
+            root.destroy()
+            create_account()
+        
+        elif(uname == "Admin" and password == "Admin"):
             messagebox.showinfo("","Login Successfull")
             root.destroy()
             create_account()
