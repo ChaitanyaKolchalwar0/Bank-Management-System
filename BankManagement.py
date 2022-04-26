@@ -1,4 +1,9 @@
-from email import message
+""" 
+Authers: Arpita Gadekar,Chaitanya Kolchalwar, Piyush Lanjewar, Adarsh Gadge, Suveg Nimje
+File Name: BankManagement.py
+"""
+
+
 import tkinter as tk
 from tkinter import *
 from tkcalendar import DateEntry
@@ -6,10 +11,9 @@ from datetime import date
 from tkinter import messagebox
 import re
 import pypyodbc as odbc
-import random
-import os
-from pandas import DataFrame
 import pandas as pd
+
+""" Establishing Connection between the SSMS and Python Using PYODBC Module """
 
 
 conn = odbc.connect('Driver={SQL Server};'
@@ -20,6 +24,8 @@ conn = odbc.connect('Driver={SQL Server};'
 
                         'Trusted_connection=yes;')
 
+""" Initializing the Tkinter window  """
+
 root=tk.Tk()
 root.title('Bank Management System')
 root.geometry("300x300")
@@ -27,15 +33,19 @@ root.geometry("300x300")
 frame=tk.Frame(root)
 frame.place(relx=0.2,rely=0.2,relheight=0.6,relwidth=0.6)
 
+"""   
+Function name: customer_details()
 
-def account_details():
+"""
+
+def customer_details():
     root=Tk()
     root.geometry("500x600")
     root.title('Bank Management System')
 
 
 
-    Label(root,text="Account Details", width=20,font=("bold",20)).grid(row=0,column=1)
+    Label(root,text="Customer Details", width=20,font=("bold",20)).grid(row=0,column=1)
     AccountNo=Label(root,text="Account No:", width=20,font=("bold",10))
     AccountNo.place(x=0,y=60)
 
@@ -52,7 +62,7 @@ def account_details():
     label2.place(x=10,y=200)
 
     label3=Label(root, text="", font=('Calibri 12'))
-    label3.place(x=10,y=230)
+    label3.place(x=10,y=220)
     
     label4=Label(root, text="", font=('Calibri 12'))
     label4.place(x=10,y=250)
@@ -313,7 +323,7 @@ def create_account():
     # filemenu.add_separator()
     filemenu.add_command(label='Delete Account',command=delete_account)
     filemenu.add_separator()
-    filemenu.add_command(label='Account Details',command=account_details)
+    filemenu.add_command(label='Customer Details',command=customer_details)
     filemenu.add_separator()
     filemenu.add_command(label='Exit', command=root.quit)
 
@@ -361,27 +371,6 @@ def create_account():
         Aadhaar_final = int(Aadhaar.get())
         Balance = 0
         PinCode_final = int(Pincode.get())
-
-        # print(AccountNO,type(AccountNO))
-        # print(Fname_final,type(Fname_final))
-        # print(Mname_final,type(Mname_final))
-        # print(Lname_final,type(Lname_final))
-        # print(phoneNo_final,type(phoneNo_final))
-        # print(Email_final,type(Email_final))
-        # print(Gender_final,type(Gender_final))
-        # print(Age_Final,type(Age_Final))
-        # print(Plno.get(),type(Plno.get()))
-        # print(L1_Address.get(),type(L1_Address.get()))
-        # print(L2_Address.get(),type(L2_Address.get()))
-        # print(Pincode.get(),type(Pincode.get()))
-        # print(City.get(),type(City.get()))
-        # print(State.get(),type(State.get()))
-        # print(country.get(),type(country.get()))
-        # print(Actype.get(),type(Actype.get()))
-        # print(Aadhaar.get() ,type(Aadhaar.get()))
-        # print(PanCard.get() ,type(PanCard.get()))
-        # print(Date_Of_Birth,type(Date_Of_Birth))
-
         
 
         cursor = conn.cursor()
@@ -396,8 +385,6 @@ def create_account():
         print(df)
 
         messagebox.showinfo("","Account Created")
-
-
 
 
     #this creates button for submitting the details provides by the user
