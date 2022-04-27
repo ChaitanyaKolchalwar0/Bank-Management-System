@@ -1,8 +1,19 @@
 """ 
-Authers: Arpita Gadekar,Chaitanya Kolchalwar, Piyush Lanjewar, Adarsh Gadge, Suveg Nimje
+Authers: 
+
+Adarsh Gadge,Arpita Gadekar,Chaitanya Kolchalwar,Piyush Lanjewar,Suveg Nimje
+
 File Name: BankManagement.py
+
+Functions Used:
+1) Transaction()
+2) Passbook()
+3) customer_details()
+4) delete_account()
+5) create_account()
 """
 
+""" List of libraries/modeules used. """
 
 import tkinter as tk
 from tkinter import *
@@ -12,10 +23,10 @@ from tkinter import messagebox
 import re
 import pypyodbc as odbc
 import pandas as pd
+import random
+
 
 """ Establishing Connection between the SSMS and Python Using PYODBC Module """
-
-
 conn = odbc.connect('Driver={SQL Server};'
 
                         'Server=ZIL1225\MSSQLDEV2019;'
@@ -32,6 +43,101 @@ root.geometry("300x300")
 
 frame=tk.Frame(root)
 frame.place(relx=0.2,rely=0.2,relheight=0.6,relwidth=0.6)
+
+
+def Transaction():
+    root = Tk() 
+    root.title('Bank Management System')
+    root.geometry("400x400")
+
+    Label(root,text="TRANSACTIONS", width=20,font=("bold",25)).grid(row=0,column=1)
+    AccountNum=Label(root,text="Account No:", width=20,font=("bold",10))
+    AccountNum.place(x=30,y=80)
+
+    AccountNum=Entry(root)
+    AccountNum.place(x=170,y=80)
+
+    type_label=Label(root,text="Transaction Type:",width=20,font=("bold",10))
+    type_label.place(x=0,y=120)
+    type_of_Transaction=['Withdraw','Deposit']
+    typetran=StringVar()
+    droplist=OptionMenu(root,typetran, *type_of_Transaction)
+    droplist.config(width=15)
+    typetran.set('Transaction')
+    droplist.place(x=20,y=140)
+
+    amount = Label(root,text="Amount:", width=20,font=("bold",10))
+    amount.place(x=220,y=120)
+    Amount = Entry(root)
+    Amount.place(x=250,y=140)
+
+
+    def Transaction_values():
+        TransactionID = 'BMS'+ str(random.randint(100, 10000))
+
+        print(typetran.get())
+        cursor=conn.cursor()
+        cursor.execute('select sum(Amount) from Transactions where AccountNum='+str(AccountNum.get()))
+        myresult = cursor.fetchone()
+
+
+        if typetran.get() == 'Withdraw':
+            Balance = float(myresult[0])-float(Amount.get())
+            if Balance < 0:
+                messagebox.showinfo("",'Your Balance is insufficient to withdraw this amount')
+            else:
+                cursor.execute('insert into Transactions(TransactionID,AccountNum,Amount) values (?,?,?)',(TransactionID,AccountNum.get(), -float(Amount.get())))
+                conn.commit()
+                messagebox.showinfo("",'Amount Debited : '+str(Amount.get())+'Rs')
+        elif typetran.get()=='Deposit':
+            cursor.execute('insert into Transactions(TransactionID,AccountNum,Amount) values (?,?,?)',(TransactionID,AccountNum.get(),float(Amount.get())))
+            conn.commit()
+            messagebox.showinfo("",'Amount Credited : '+str(Amount.get())+'Rs')
+
+
+    
+    Button(root, text='Submit' , width=20,bg="black",fg='white',font=("bold",10),command= lambda : Transaction_values()).place(x=110,y=220)
+    root.mainloop()
+
+
+
+def Passbook():
+
+    root=Tk()
+    root.title('Bank Management System')
+    root.geometry("400x400")
+
+
+    Label(root,text="Passbook", width=20,font=("bold",20)).grid(row=0,column=1)
+    AccountNum=Label(root,text="Account No:", width=20,font=("bold",10))
+    AccountNum.place(x=5,y=50)
+
+    AccountNo3=Entry(root)
+    AccountNo3.place(x=50,y=90)
+
+    def getvalues():
+        cursor = conn.cursor()
+        cursor.execute('exec Passbook @AccountNum='+str(AccountNo3.get()))
+        # data = cursor.fetchall()
+        
+        data=[list(i) for i in cursor.fetchall()]
+        print(data)
+        df=pd.DataFrame(data,columns=["     Date     ","   Amount ","     Balance "])
+        print(df)
+
+        if not data :
+            messagebox.showerror("","Account Number is Not Valid")
+
+        else:
+
+            label=Label(root, text="", font=('Calibri 12'))
+            label.place(x=10,y=150)
+            label.config(text=str(df))
+            
+
+    Button(root, text='Submit' , width=16,bg="black",fg='white',font=("bold",10),command= lambda : getvalues()).place(x=250,y=75)
+    # root.mainloop()
+
 
 """   
 Function name: customer_details()
@@ -325,11 +431,14 @@ def create_account():
     filemenu.add_separator()
     filemenu.add_command(label='Customer Details',command=customer_details)
     filemenu.add_separator()
+    filemenu.add_command(label='Passbook',command=Passbook)
+    filemenu.add_separator()
+    filemenu.add_command(label='Transaction',command=Transaction)
+    filemenu.add_separator()
     filemenu.add_command(label='Exit', command=root.quit)
 
 
     def get_data():
-
 
         # Get the Full name
         name = Fname.get() +' '+ Mname.get() +' '+ Lname.get()
