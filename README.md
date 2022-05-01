@@ -48,7 +48,9 @@ The Modules description of Bank Account Management System project. These modules
 * def delete_account():
     This function helps us to delete your exixting account.
 * def update_account():
-    This function helps us to upadte or modify the account details. 
-    
+    This function helps us to update or modify the account details. 
+* def Interest_Generate():
+    This function helps us to generate interest for the respective customer.
+
     
   
