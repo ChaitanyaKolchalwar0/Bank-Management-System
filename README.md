@@ -26,6 +26,7 @@ The Modules description of Bank Account Management System project. These modules
 4.	Customer Details.
 5.	Passbook.
 6.	Delete account.
+7.	Modify Account Details.
 
 ## 4. Build With
 
@@ -36,15 +37,17 @@ The Modules description of Bank Account Management System project. These modules
 * def login():
     This functions help us to login as admin.
 * def create_account():
-    This functions help us to get the details from user while creating an account.
+    This functions helps us to get the details from user while creating an account.
 * def Transaction():
-    This function help us to perform transactions like cash deposit and cash withdraw.
+    This function helps us to perform transactions like cash deposit and cash withdraw.
 * def Passbook():
-    This function help us to print the transaction details which you have done till now.
+    This function helps us to print the transaction details which you have done till now.
 * def customer_details():
-    This funtion help us to get the customer details.
+    This funtion helps us to get the customer details.
 * def delete_account():
-    This function help us to delete your exixting account.
+    This function helps us to delete your exixting account.
+* def update_account():
+    This function helps us to upadte or modify the account details. 
     
     
   
