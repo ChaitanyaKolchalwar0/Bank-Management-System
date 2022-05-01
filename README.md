@@ -31,3 +31,11 @@ The Modules description of Bank Account Management System project. These modules
 
 * Python
 * SQL Server
+
+## Task : 
+* def login():
+    This functions help us to login as admin.
+* def create_account():
+    This functions help us to get the details from user while creating an account.
+    
+  
