@@ -44,6 +44,134 @@ frame = tk.Frame(root)
 frame.config(bg="light blue")
 frame.place(relx=0.2, rely=0.2, relheight=0.6, relwidth=0.6)
 
+def update_account():
+
+    
+    root=Toplevel()
+    root.title('Bank Management System')
+    root.geometry("500x600")
+    root.config(bg='light blue')
+
+    Label(root,text="update Details", width=20,font=("bold",20)).grid(row=0,column=1)
+
+    AccountNo=Label(root,text="Account No:", width=20,bg='light blue',font=("bold",10))
+    AccountNo.place(x=0,y=130)
+    AccountNo=Entry(root,width=20)
+    AccountNo.place(x=50,y=160)
+
+    label_0 =Label(root,text="Update Account Details", width=33,bg='orange',font=("bold",20))
+    label_0.place(x=0,y=0)
+
+
+   
+    ################################# Second Row #############################################
+
+    phno =Label(root,text="Phone Number", width=20,bg='light blue',font=("bold",10))
+    phno.place(x=160,y=130)
+    phoneNo=Entry(root)
+    phoneNo.place(x=200,y=160)
+
+ 
+    # Email
+    email =Label(root,text="E-mail", width=20,bg='light blue',font=("bold",10))
+    email.place(x=300,y=130)
+    Email=Entry(root)
+    Email.place(x=350,y=160)
+
+
+    ################################# Fourth Row #############################################
+
+    # plot no
+    plno =Label(root,text="Plot.No", width=20,bg='light blue',font=("bold",10))
+    plno.place(x=0,y=220)
+    Plno=Entry(root)
+    Plno.place(x=50,y=250)
+
+    # Address line 1
+    line1 =Label(root,text="Address line 1", width=20,bg='light blue',font=("bold",10))
+    line1.place(x=160,y=220)
+    L1_Address=Entry(root)
+    L1_Address.place(x=200,y=250)
+
+    # Address line 2
+    line2 =Label(root,text="Address line 2", width=20,bg='light blue',font=("bold",10))
+    line2.place(x=310,y=220)
+    L2_Address=Entry(root)
+    L2_Address.place(x=350,y=250)
+
+    ################################# Fifth Row ###############################################
+
+    # Pincode
+    pinCode =Label(root,text="PinCode", width=20,bg='light blue',font=("bold",10))
+    pinCode.place(x=0,y=320)
+    Pincode=Entry(root)
+    Pincode.place(x=50,y=350)
+
+    # City
+    city =Label(root,text="City", width=20,bg='light blue',font=("bold",10))
+    city.place(x=160,y=320)
+    City=Entry(root)
+    City.place(x=200,y=350)
+
+    # State
+    state_label =Label(root,text="State", width=20,bg='light blue',font=("bold",10))
+    state_label.place(x=310,y=320)
+    State=Entry(root)
+    State.place(x=350,y=350)
+    
+    ##this creates 'Label' widget for country and uses place() method.
+    label_5=Label(root,text="Nationality",width=20,bg='light blue',font=("bold",10))
+    label_5.place(x=0,y=400)
+
+    #this creates list of countries available in the dropdownlist.
+    list_of_country=[ 'India' ,'US' , 'UK' ,'Germany' ,'Austria']
+
+    #the variable 'c' mentioned here holds String Value, by default ""
+    country=StringVar()
+    droplist=OptionMenu(root,country, *list_of_country)
+    droplist.config(width=15)
+    country.set('Select your Country')
+    droplist.place(x=50,y=420)
+
+    # Account type
+    type_label=Label(root,text="Account Type",width=20,bg='light blue',font=("bold",10))
+    type_label.place(x=270,y=400)
+    list_of_account_type=[ 'Savings Account' ,'Current Account']
+    Actype=StringVar()
+    droplist=OptionMenu(root,Actype, *list_of_account_type)
+    droplist.config(width=15)
+    Actype.set('Select Account Type')
+    droplist.place(x=310,y=420)
+
+    def get_data():
+
+   
+        if len(str(phoneNo.get())) == 10:
+            phoneNo_final = int(phoneNo.get())
+        
+        else:
+            messagebox.showerror("","Enter a Valid Number")
+    
+            
+        check_email = re.search("[a-z0-9]+[@]+[a-z]+\.com", Email.get())
+        if check_email:
+            Email_final = Email.get()
+        else:
+            messagebox.showerror("","Enter a Valid Email Address")
+        
+        
+        PinCode_final = int(Pincode.get())
+
+        cursor = conn.cursor()
+        cursor.execute( "EXEC Updateinfo @AccountNum=?,@PhoneNo=?,@Email=?,@Plot_Num=?,@L1_Address=?,@L2_Address=?,@Pincode=?,@City=?,@State=? ,@Nationality=?,@Account_type=?", (AccountNo.get(),phoneNo_final,Email_final,Plno.get(),L1_Address.get(),L2_Address.get(),PinCode_final,City.get(),State.get(),country.get(),Actype.get()))
+        conn.commit()
+    
+        messagebox.showinfo("","Account updated")
+
+
+    Button(root, text='Submit' , width=20,bg="orange",font=("bold",10),fg='light blue',command= lambda : get_data()).place(x=180,y=500)
+    root.mainloop()
+
 
 def Transaction():
     root = Toplevel()
@@ -66,7 +194,7 @@ def Transaction():
     typetran=StringVar()
     droplist=OptionMenu(root,typetran, *type_of_Transaction)
     droplist.config(width=15)
-    typetran.set('Transaction')
+    typetran.set('Select')
     droplist.place(x=20,y=140)
 
     amount = Label(root,text="Amount:",bg="light blue", width=20,font=("bold",10))
@@ -87,7 +215,7 @@ def Transaction():
         if typetran.get() == 'Withdraw':
             Balance = float(myresult[0])-float(Amount.get())
             if Balance < 0:
-                messagebox.showinfo("",'Your Balance is insufficient to withdraw this amount')
+                messagebox.showerror("",'Your Balance is insufficient to withdraw this amount')
             else:
                 cursor.execute('insert into Transactions(TransactionID,AccountNum,Amount) values (?,?,?)',(TransactionID,AccountNum.get(), -float(Amount.get())))
                 conn.commit()
@@ -108,6 +236,10 @@ def Transaction():
     ).place(x=110, y=220)
     # root.mainloop()
 
+"""   
+Function name: Passbook()
+
+"""
 
 def Passbook():
 
@@ -124,17 +256,17 @@ def Passbook():
     AccountNo3.place(x=50, y=130)
 
     Label(root, text="Start Date:", width=20, bg="light blue",font=("bold", 10)).place(x=0, y=40)
-    date1 = DateEntry(root)
-    date1.pack(padx=0,pady=10)
+    strtdate = DateEntry(root)
+    strtdate.pack(padx=0,pady=10)
 
     Label(root, text="End Date:", width=20, bg="light blue",font=("bold", 10)).place(x=0, y=80)
-    date2 = DateEntry(root)
-    date2.pack(padx=0,pady=10)
+    enddate = DateEntry(root)
+    enddate.pack(padx=0,pady=10)
 
     def getvalues():
         cursor = conn.cursor()
-        cursor.execute("exec Passbook @AccountNum=" + str(AccountNo3.get()))
-        # data = cursor.fetchall()
+        cursor.execute('exec Passbook ' + str(AccountNo3.get()) + ','+"'" +str(strtdate.get_date()) +"'"+ ','+ "'"+str(enddate.get_date())+"'" )
+        
 
         data = [list(i) for i in cursor.fetchall()]
         print(data)
@@ -258,6 +390,10 @@ def customer_details():
     ).place(x=200, y=95)
     root.mainloop()
 
+"""   
+Function name: delete_account()
+
+"""
 
 def delete_account():
     root = Tk()
@@ -301,6 +437,9 @@ def delete_account():
     ).place(x=100, y=200)
     root.mainloop()
 
+"""   
+Function name: create_account()
+"""
 
 def create_account():
 
@@ -461,6 +600,8 @@ def create_account():
     filemenu.add_separator()
     filemenu.add_command(label="Passbook", command=Passbook)
     filemenu.add_separator()
+    filemenu.add_command(label="UpdateAccount", command=update_account)
+    filemenu.add_separator()
     filemenu.add_command(label="Exit", command=root.quit)
 
     def get_data():
@@ -527,7 +668,7 @@ def create_account():
                 PanCard.get(),
                 Date_Of_Birth,
                 Balance,
-            ),
+            )
         )
         conn.commit()
         cursor.execute("select * from Create_Account")
@@ -574,7 +715,9 @@ def create_account():
         command=lambda: get_data(),
     ).place(x=180, y=500)
   
-
+"""
+Function Name: login()
+"""
 
 def login():
     def credential():
