@@ -26,3 +26,8 @@ The Modules description of Bank Account Management System project. These modules
 4.	Customer Details.
 5.	Passbook.
 6.	Delete account.
+
+## 4. Build With
+
+* Python
+* SQL Server
