@@ -46,7 +46,7 @@ frame.place(relx=0.2, rely=0.2, relheight=0.6, relwidth=0.6)
 
 
 def Transaction():
-    root = Tk()
+    root = Toplevel()
     root.geometry("400x400")
     root.config(bg="light blue")
     root.title("Bank Management System")
@@ -453,13 +453,13 @@ def create_account():
     menu.add_cascade(label="Menu", menu=filemenu)
     # filemenu.add_command(label='Create Account',command=create_account)
     # filemenu.add_separator()
+    filemenu.add_command(label="Transaction", command=Transaction)
+    filemenu.add_separator()
     filemenu.add_command(label="Delete Account", command=delete_account)
     filemenu.add_separator()
     filemenu.add_command(label="Customer Details", command=customer_details)
     filemenu.add_separator()
     filemenu.add_command(label="Passbook", command=Passbook)
-    filemenu.add_separator()
-    filemenu.add_command(label="Transaction", command=Transaction)
     filemenu.add_separator()
     filemenu.add_command(label="Exit", command=root.quit)
 
