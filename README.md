@@ -27,7 +27,7 @@ The Modules description of Bank Account Management System project. These modules
 5.	Passbook.
 6.	Delete account.
 7.	Modify Account Details.
-8.	Interest Generator
+8.	Interest Calculator.
 
 ## 4. Build With
 
