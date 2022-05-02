@@ -62,6 +62,11 @@ You can also refer requirements.txt.
 ## 6. Functions : 
 * def login():
     This functions help us to login as admin.
+    - Asking for username
+	- Checks the conditional statement for validating username.
+	- If username not found then throws the error to retype the username and password.
+	- If username and password matches then, access the create account page.
+		
 * def create_account():
     This functions helps us to get the details from user while creating an account.
 * def Transaction():
