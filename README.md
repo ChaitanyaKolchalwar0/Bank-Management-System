@@ -42,10 +42,23 @@ The Modules description of Bank Account Management System project. These modules
 $ git clone https://github.com/ChaitanyaKolchalwar0/Bank-Management-System.git
 ```
 ### Python Modules Installation
-#### pypyodbc:
+#### Pypyodbc:
 ```
 $ pip install pypyodbc
 ```
+#### Tkinter:
+```
+$ pip install tk
+```
+#### Pandas:
+```
+$ pip install pandas
+```
+#### Regex:
+```
+$ pip install regex
+```
+You can also refer requirements.txt.
 ## 6. Task : 
 * def login():
     This functions help us to login as admin.
