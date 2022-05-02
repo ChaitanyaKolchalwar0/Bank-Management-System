@@ -59,7 +59,7 @@ $ pip install pandas
 $ pip install regex
 ```
 You can also refer requirements.txt.
-## 6. Task : 
+## 6. Functions : 
 * def login():
     This functions help us to login as admin.
 * def create_account():
