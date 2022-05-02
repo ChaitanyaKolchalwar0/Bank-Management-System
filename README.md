@@ -58,7 +58,8 @@ $ pip install pandas
 ```
 $ pip install regex
 ```
-You can also refer requirements.txt.
+You can also refer requirements.txt for the perticular versions of modules used.
+
 ## 6. Functions : 
 * def login():
     This functions help us to login as admin.
