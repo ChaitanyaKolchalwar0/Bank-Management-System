@@ -69,6 +69,28 @@ You can also refer requirements.txt.
 		
 * def create_account():
     This functions helps us to get the details from user while creating an account.
+    - function to create a new user account
+	- will ask the user for
+		
+		- First Name
+		- Middle Name
+		- Last Name
+		- Gender
+			- Male
+			- Female
+		- DOB(DD/MM/YYYY)
+		- Address line1
+		- Address line 2 
+		- Pincode
+		- Mobile No
+			- validate the Mobile No
+		- Email_Id
+		- Nationality
+		- Account_type
+			- Saving
+			- Current
+						
+    
 * def Transaction():
     This function helps us to perform transactions like cash deposit and cash withdraw.
 * def Passbook():
