@@ -44,6 +44,50 @@ frame = tk.Frame(root)
 frame.config(bg="light blue")
 frame.place(relx=0.2, rely=0.2, relheight=0.6, relwidth=0.6)
 
+
+def Interest_Generator():
+
+    root = Tk()
+    root.geometry("400x400")
+    root.config(bg="light blue")
+    root.title("Bank Management System")
+
+    Label(root, text="Interest Generator",bg="Orange", width=37, font=("bold", 15)).grid(row=0, column=1)
+
+    AccountNum=Label(root,text="Account No:", bg="light blue",width=20,font=("bold",10))
+
+    AccountNum.place(x=5,y=50)
+
+    AccountNo=Entry(root)
+
+    AccountNo.place(x=50,y=90)
+
+    def Interest_Generate():
+
+        TransactionID = 'BMS'+ str(random.randint(100, 10000))
+
+        cursor=conn.cursor()
+
+        cursor.execute('exec InterestCalculation @AccountNum='+str(AccountNo.get()))
+
+        myresult = cursor.fetchall()
+
+        interest = myresult[0][0]
+
+        cursor.execute('insert into Transactions(TransactionID,AccountNum,Amount) values (?,?,?)',(TransactionID,AccountNo.get(),interest))
+
+        conn.commit()
+
+        messagebox.showinfo("","Interest Credited")
+
+    Button(root,text="Generate Interest",width=20,bg="Orange",fg="black",font=("bold", 10),command=lambda: Interest_Generate()).place(x=110, y=220)
+
+    # messagebox.showinfo("", "Interest Generated")
+
+    root.mainloop()
+
+
+
 def update_account():
 
     
@@ -246,9 +290,9 @@ def Passbook():
     root = Tk()
     root.title("Bank Management System")
     root.config(bg="light blue")
-    root.geometry("400x520")
+    root.geometry("430x520")
 
-    Label(root, text="Passbook",bg="Orange", width=37, font=("bold", 15)).pack()
+    Label(root, text="Passbook",bg="Orange", width=40, font=("bold", 15)).pack()
     AccountNum = Label(root, text="Account No:", width=20, bg="light blue",font=("bold", 10))
     AccountNum.place(x=5, y=110)
 
@@ -601,6 +645,8 @@ def create_account():
     filemenu.add_command(label="Passbook", command=Passbook)
     filemenu.add_separator()
     filemenu.add_command(label="UpdateAccount", command=update_account)
+    filemenu.add_separator()
+    filemenu.add_command(label="Interest Calculator", command=Interest_Generator)
     filemenu.add_separator()
     filemenu.add_command(label="Exit", command=root.quit)
 
