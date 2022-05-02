@@ -93,16 +93,35 @@ You can also refer requirements.txt.
     
 * def Transaction():
     This function helps us to perform transactions like cash deposit and cash withdraw.
+    - Ask to enter the Account Number
+    - Select Transaction Type
+    - Enter Amount
+    
 * def Passbook():
     This function helps us to print the transaction details which you have done till now.
+    - Select Start and End Date.
+    - Enter Account Number.
 * def customer_details():
     This funtion helps us to get the customer details.
+    - Enter Account Number.
+    - Fetch Details using Submit button.
 * def delete_account():
     This function helps us to delete your exixting account.
+     - Enter Account Number.
+     - Delete the Acccount.
 * def update_account():
     This function helps us to update or modify the account details. 
+    - This is main updating function where all options can be updated.
+		1. username 
+		2. password
+		3. mobile number
+		4. email-id
+		5. address 
+			
 * def Interest_Generate():
     This function helps us to generate interest for the respective customer.
+    - Enter Account Number
+    - Interest will be generated and added to the customers account.
 
     
   
