@@ -29,8 +29,8 @@ import random
 """ Establishing Connection between SSMS and Python Using PYODBC Module """
 conn = odbc.connect(
     "Driver={SQL Server};"
-    "Server=ZIL1225\MSSQLDEV2019;"
-    "Database=BankManagement;"
+    "Server= 'Enter your server name';"
+    "Database='EnterDatabase Name';"
     "Trusted_connection=yes;"
 )
 
